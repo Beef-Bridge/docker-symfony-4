@@ -19,6 +19,5 @@ script:
   - docker-compose -f docker-stack.yaml build
   - docker-compose -f docker-stack.yaml up -d
   - docker-compose -f docker-stack.yaml ps
-  - docker-compose exec -u www-data app bin/console --version
   - docker-compose exec -u www-data app composer --version
   - docker-compose -f docker-stack.yaml stop
