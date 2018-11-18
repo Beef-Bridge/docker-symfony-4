@@ -1,0 +1,60 @@
+version: '3'
+
+services:
+        mysql:
+            build:
+                context: ./docker/db
+                dockerfile: Dockerfile.mysql
+            container_name: ${PROJECT_NAME}_mysql
+            volumes:
+                - ./.data/mysql:/var/lib/mysql:rw
+            env_file:
+                - .env
+            ports:
+                - "3306:3306"
+
+        app:
+            build:
+                context: ./docker/app
+                args:
+                    - timezone=${TZ}
+            container_name: ${PROJECT_NAME}_app
+            volumes:
+                - ./www/${PROJECT_NAME}:/srv:rw,cached
+                - app_log:/srv/var/log
+            env_file:
+                - .env
+            environment:
+                XDEBUG_CONFIG: remote_host=${XDEBUG_REMOTE_HOST}
+                PHP_IDE_CONFIG: serverName=${NGINX_HOST}
+            depends_on:
+                - mysql
+
+        nginx:
+            build:
+                context: ./docker/nginx
+                args:
+                    - nginx_host=${NGINX_HOST}
+                    - ssl_country=${SSL_COUNTRY}
+                    - ssl_state=${SSL_STATE}
+                    - ssl_location=${SSL_LOCATION}
+            container_name: ${PROJECT_NAME}_nginx
+            ports:
+                - "80:80"
+                - "443:443"
+            depends_on:
+                - app
+            volumes:
+                - ./www/${PROJECT_NAME}/public:/srv/public:ro
+                - ./docker/nginx/default.template:/etc/nginx/conf.d/default.template
+                - nginx_log:/var/log/nginx
+            env_file:
+                - .env
+            command: /bin/bash -c "envsubst '$$NGINX_HOST'
+                < /etc/nginx/conf.d/default.template
+                > /etc/nginx/conf.d/default.conf
+                && exec nginx -g 'daemon off;'"
+
+volumes:
+    app_log:
+    nginx_log:
