@@ -1,6 +1,8 @@
 # Docker Symfony 4 (PHP7-FPM - NGINX - MySQL)
 Docker-symfony-4 gives you a complete stack you need for developing Symfony application.
 
+[![Build Status](https://travis-ci.org/Beef-Bridge/docker-symfony-4.svg?branch=master)](https://travis-ci.org/Beef-Bridge/docker-symfony-4)
+
 ## Requirements
 *  [Docker](https://docs.docker.com/engine/installation/) installed
 *  [Docker Compose](https://docs.docker.com/compose/install/) installed
@@ -46,6 +48,8 @@ It ends by adding some Symfony dependencies to the project (using Composer):
 * doctrine/doctrine-bundle
 * symfony/maker-bundle --dev
 * symfony/profiler-pack --dev
+
+Of course, you can adds and/or remove these dependencies as you need.
 
 ## Useful commands
 ```
