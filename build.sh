@@ -25,6 +25,23 @@ HOSTNAME=${NGINX_HOST}
 
 
 
+# Update Composer him-self
+# ------------------------
+echo -e "${BG_BLUE}---> updating Composer${DEFAULT}";
+composer self-update
+echo -e "${GREEN}$(composer --version)${DEFAULT}";
+
+
+
+# Clear Composer cache
+# --------------------
+echo -e "${BG_BLUE}---> cleaning Composer cache${DEFAULT}";
+# composer clearcache
+sudo rm -rf ~/.composer/cache*
+echo -e "${GREEN}All caches Composer cleared${DEFAULT}";
+
+
+
 # Adding a domain to the hosts file
 # ---------------------------------
 echo -e "${BG_BLUE}---> adding host${DEFAULT}";
@@ -51,7 +68,7 @@ fi
 echo -e "${BG_BLUE}---> downloading symfony framework and creating project${DEFAULT}";
 mkdir www
 cd www/
-composer create-project symfony/skeleton ${PROJECT_NAME}
+COMPOSER_CACHE_DIR=/dev/null composer create-project symfony/skeleton ${PROJECT_NAME}
 
 echo -e "${BG_BLUE}---> changing few elements in symfony project${DEFAULT}";
 rm -f ${PROJECT_NAME}/.env
@@ -78,7 +95,7 @@ cd ..
 echo -e "${BG_BLUE}---> building docker containers${DEFAULT}";
 docker-compose -f docker-compose.yaml build --no-cache --force-rm
 
-echo -e "${BG_BLUE}---> up docker containers"
+echo -e "${BG_BLUE}---> up docker containers${DEFAULT}";
 docker-compose -f docker-compose.yaml up -d
 
 
@@ -102,17 +119,17 @@ docker-compose exec -u www-data app composer require symfony/maker-bundle --dev 
 # --------
 clear
 echo -e "${GREEN}******************************************************************************"
-echo "***                                                                        ***"
-echo "***                                                                        ***"
-echo "***                        !!! Congratulations !!!                         ***"
-echo "***                                                                        ***"
-echo "***                                                                        ***"
-echo "*** Your ${PROJECT_NAME} project is configured !                           ***"
-echo "*** You can access to your application with :                              ***"
-echo "*** - http://${NGINX_HOST}/                                                ***"
-echo "*** - https://${NGINX_HOST}/                                               ***"
-echo "***                                                                        ***"
-echo "*** Have dev fun ;-)                                                       ***"
+echo "***"
+echo "***"
+echo "***                        !!! Congratulations !!!"
+echo "***"
+echo "***"
+echo "*** Your ${PROJECT_NAME} project is configured !"
+echo "*** You can access to your application with :"
+echo "*** - http://${NGINX_HOST}/"
+echo "*** - https://${NGINX_HOST}/"
+echo "***"
+echo "*** Dev fun ;-)"
 echo "******************************************************************************"
 1>&2
 exit 1
