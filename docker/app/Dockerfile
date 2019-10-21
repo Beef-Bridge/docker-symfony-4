@@ -14,13 +14,17 @@ RUN apt-get update && apt-get install --no-install-recommends --no-install-sugge
     	gnupg \
     && rm -rf /var/lib/apt/lists/*
 
+RUN apt-get update && \
+     apt-get install -y \
+         libzip-dev \
+         && docker-php-ext-install zip
+
 RUN set -xe \
     && docker-php-ext-configure \
         intl \
     && docker-php-ext-install \
         intl \
         opcache \
-        zip \
         pdo \
         pdo_mysql \
     && pecl install \
