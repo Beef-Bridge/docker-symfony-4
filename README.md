@@ -8,7 +8,7 @@ Docker-symfony-4 gives you a complete stack you need for developing Symfony appl
 *  [Docker Compose](https://docs.docker.com/compose/install/) installed
 
 ## Services
-*  PHP-FPM 7.2
+*  PHP-FPM 7.3
 *  Nginx 1.13
 *  MySQL 5.7
 
@@ -72,7 +72,7 @@ $ docker stop $(docker ps -aq)
 $ docker rm $(docker ps -aq)
 
 # Delete all images
-$ docker rmi ($docker images -q)
+$ docker rmi $(docker images -q)
 ```
 
 ## FAQ
